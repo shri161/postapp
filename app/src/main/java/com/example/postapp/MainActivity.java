@@ -22,7 +22,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.squareup.picasso.Picasso;
+
 
 public class MainActivity extends AppCompatActivity {
  private RecyclerView mBlogList;
@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
              protected void populateViewHolder(BlogViewHolder blogViewHolder, Blog blog, int i) {
                  blogViewHolder.setTitle( blog.getTitle() );
                  blogViewHolder.setDesc( blog.getDesc() );
-                 blogViewHolder.setImage( getApplicationContext(), blog.getImage());
+
              }
 
         };
@@ -76,12 +76,7 @@ public class MainActivity extends AppCompatActivity {
             TextView post_desc=(TextView) mView.findViewById(R.id.post_desc);
             post_desc.setText(desc);
         }
-        public void setImage(Context ctx, String image)
-        {
-            ImageView post_image=(ImageView)mView.findViewById( R.id.post_image );
-            Picasso.with(ctx).load(image).into(post_image);
 
-        }
 
     }
 
