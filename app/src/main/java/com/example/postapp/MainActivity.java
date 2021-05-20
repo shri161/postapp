@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -22,16 +23,33 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.NetworkPolicy;
+import com.squareup.picasso.Picasso;
 
 
 public class MainActivity extends AppCompatActivity {
  private RecyclerView mBlogList;
  private DatabaseReference mDatabase;
+ private FirebaseAuth mAuth;
+ private FirebaseAuth.AuthStateListener mAuthListener;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
         mDatabase=FirebaseDatabase.getInstance().getReference().child("Blog" );
         mDatabase.keepSynced(true);
+        mAuth=FirebaseAuth.getInstance();
+        mAuthListener=new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                if(firebaseAuth.getCurrentUser()==null)
+                {
+                    Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
+                    loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(loginIntent);
+                }
+            }
+        };
         setContentView( R.layout.activity_main );
         mBlogList = (RecyclerView) findViewById(R.id.blog_list);
         mBlogList.setHasFixedSize(true);
@@ -41,13 +59,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-
+      mAuth.addAuthStateListener(mAuthListener);
          FirebaseRecyclerAdapter<Blog,BlogViewHolder> firebaseRecyclerAdapter= new FirebaseRecyclerAdapter<Blog, BlogViewHolder>(Blog.class,R.layout.blog_row,BlogViewHolder.class,mDatabase) {
              @Override
              protected void populateViewHolder(BlogViewHolder blogViewHolder, Blog blog, int i) {
                  blogViewHolder.setTitle( blog.getTitle() );
                  blogViewHolder.setDesc( blog.getDesc() );
-
+                 blogViewHolder.setImage(getApplicationContext(),blog.getImage() );
              }
 
         };
@@ -76,7 +94,10 @@ public class MainActivity extends AppCompatActivity {
             TextView post_desc=(TextView) mView.findViewById(R.id.post_desc);
             post_desc.setText(desc);
         }
-
+        public void setImage(final Context ctx,final String image) {
+            final ImageView post_image = (ImageView) mView.findViewById( R.id.post_image );
+            Picasso.with( ctx ).load( image ).into( post_image );
+        }
 
     }
 
