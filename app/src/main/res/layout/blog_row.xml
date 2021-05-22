@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="10dp"
     android:orientation="vertical">
 
     <ImageView
@@ -21,6 +22,18 @@
         android:id="@+id/post_desc"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="post description" />
+        android:text="post description"
+        />
+    <TextView
+        android:id="@+id/username"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="name "/>
 
+    <ImageView
+        android:id="@+id/likeBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@mipmap/outline_favorite_border_black_24dp"
+        />
 </LinearLayout>

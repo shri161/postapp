@@ -7,9 +7,11 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -26,6 +28,7 @@ public class RegisterActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
     private ProgressDialog mProgress;
+    private static final String TAG=RegisterActivity.class.getSimpleName();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
@@ -51,9 +54,11 @@ public class RegisterActivity extends AppCompatActivity {
         String name=mNameField.getText().toString().trim();
         String email=mEmailField.getText().toString().trim();
         String password=mPasswordField.getText().toString().trim();
+        Log.d( TAG,password );
         if(!TextUtils.isEmpty(name)&&!TextUtils.isEmpty(email)&&!TextUtils.isEmpty(password))
-        {    mProgress.setMessage("Signing up..");
+        {    mProgress.setMessage(password);
              mProgress.show();
+             Log.d(TAG,password);
             mAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
@@ -66,6 +71,12 @@ public class RegisterActivity extends AppCompatActivity {
                         Intent mainIntent = new Intent( RegisterActivity.this, MainActivity.class );
                         mainIntent.addFlags( Intent.FLAG_ACTIVITY_CLEAR_TOP );
                         startActivity( mainIntent );
+                    }
+                    else
+                    {
+                        String message=task.getException().toString();
+                        Toast.makeText(RegisterActivity.this,message,Toast.LENGTH_LONG).show();
+                        mProgress.dismiss();
                     }
                 }
             });

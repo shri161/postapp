@@ -4,14 +4,23 @@ public class Blog {
     private String title;
     private String desc;
     private String image;
+    private String username;
     public Blog(){
 
     }
-    public Blog(String title,String desc,String image)
+    public Blog(String title,String desc,String image,String username)
     {
         this.desc=desc;
         this.image=image;
         this.title=title;
+        this.username=username;
+    }
+    public String getUsername(){
+        return username;
+    }
+    public void setUsername()
+    {this.username=username;
+
     }
     public String getDesc() {
         return desc;

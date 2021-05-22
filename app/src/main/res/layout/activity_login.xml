@@ -35,6 +35,11 @@
         tools:layout_editor_absoluteX="141dp"
         tools:layout_editor_absoluteY="539dp" />
 
+    <com.google.android.gms.common.SignInButton
+        android:id="@+id/googleBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"></com.google.android.gms.common.SignInButton>
+
     <Button
         android:id="@+id/newAccount"
         android:layout_width="match_parent"
